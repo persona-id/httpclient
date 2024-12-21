@@ -178,6 +178,12 @@ class HTTPClient
         raise
       end
       sess
+    rescue Exception => e
+      if defined?(Async::Stop) && e.is_a?(Async::Stop)
+        sess&.close
+      end
+
+      raise
     end
 
     def reset(uri)
@@ -625,6 +631,12 @@ class HTTPClient
         raise e.class, e.message + " (#{host}:#{port})"
       end
       socket
+    rescue Exception => e
+      if defined?(Async::Stop) && e.is_a?(Async::Stop)
+        socket&.close
+      end
+
+      raise
     end
 
     def create_loopback_socket(host, port, str)
