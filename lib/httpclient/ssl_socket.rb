@@ -28,6 +28,12 @@ class HTTPClient
         socket.close
         raise
       end
+    rescue Exception => e
+      if defined?(Async::Stop) && e.is_a?(Async::Stop)
+        socket&.close
+      end
+
+      raise
     end
 
     def initialize(socket, dest, config, opts = {})
