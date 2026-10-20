@@ -1948,10 +1948,10 @@ private
 
   def with_tmp_path
     path = File.join(Dir.tmpdir, 'http-client-test')
-    File.delete(path) if File.exists?(path)
+    File.delete(path) if File.exist?(path)
     yield path
   ensure
-    File.delete(path) if File.exists?(path)
+    File.delete(path) if File.exist?(path)
   end
 
   def check_query_get(query)
