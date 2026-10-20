@@ -38,4 +38,8 @@ jobs:
         bundler-cache: true
         cache-version: 2
     - name: Run tests
-      run: bundle exec rake --trace RUBYOPT="${{ matrix.ruby-opt }}"
+      # Passing RUBYOPT to rake overwrites the `-rbundler/setup` that
+      # `bundle exec` injects. Bundler 2.x/4.0 re-add it; the Bundler shipped
+      # with ruby-head (4.1) does not, so the test process loses the bundle
+      # (e.g. the git-sourced rubyntlm). Keep bundler/setup explicitly.
+      run: bundle exec rake --trace RUBYOPT="-rbundler/setup ${{ matrix.ruby-opt }}"
